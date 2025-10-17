@@ -1,0 +1,129 @@
+# Smart Parking SJF Game
+
+## Overview
+
+An interactive educational web application that visualizes the Shortest Job First (SJF) scheduling algorithm through a parking slot allocation game. The application demonstrates operating system scheduling concepts by simulating a smart parking system where cars are assigned to the nearest available parking slots, helping users learn algorithm behavior through real-time visual feedback.
+
+The game features a grid-based parking lot with multiple slots, a waiting queue for incoming cars, and performance metrics tracking. Users can add cars, watch the SJF algorithm automatically assign them to optimal slots based on distance, and analyze system performance through various statistics.
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+## System Architecture
+
+### Frontend Architecture
+
+*Framework*: React 18 with TypeScript
+- Single-page application (SPA) using Wouter for client-side routing
+- Component-based architecture with functional components and hooks
+- State management using React hooks (useState, useEffect, useRef, useCallback)
+- Real-time animations powered by Framer Motion for smooth transitions and visual feedback
+
+*UI Component System*: Shadcn UI (New York style)
+- Radix UI primitives for accessible, unstyled components
+- Custom-styled components using Tailwind CSS with CSS variables
+- Comprehensive component library including buttons, cards, dialogs, tooltips, badges, and more
+- Support for both light and dark themes with seamless switching
+
+*Styling Approach*: Tailwind CSS with custom design system
+- Utility-first CSS framework with custom configuration
+- Design tokens defined through CSS variables for theming
+- Custom color palette combining modern design with playful aesthetics
+- Typography system using DM Sans (primary), JetBrains Mono (code/metrics), and Caveat (accents)
+- Responsive design with mobile-first approach
+
+*Key Game Components*:
+- ParkingGrid: Renders the parking lot grid, calculates distances from entrance
+- ParkingSlot: Individual slot representation with occupied/available states
+- CarQueue: Displays waiting cars sorted by the SJF algorithm
+- ControlPanel: User interaction controls (add car, reset, auto mode toggle)
+- StatsDashboard: Real-time performance metrics visualization
+- ThemeToggle: Dark/light mode switcher with localStorage persistence
+
+*Game Logic Architecture*:
+- Uses refs (slotsRef, currentTimeRef, nextCarIdRef) to maintain state across async operations
+- Implements SJF algorithm by finding the nearest available parking slot using Euclidean distance
+- Supports both manual mode (user adds cars) and auto mode (cars added automatically)
+- Tracks comprehensive statistics: total cars parked, average wait time, average distance, slot utilization
+
+### Backend Architecture
+
+*Server Framework*: Express.js with TypeScript
+- Minimal REST API setup (routes placeholder exists but not heavily used)
+- Server-side rendering setup for Vite in development mode
+- Custom middleware for request logging and error handling
+- HTTP server created using Node's native http module
+
+*Development Setup*:
+- Vite middleware integration for HMR (Hot Module Replacement) in development
+- Custom Vite plugins: runtime error modal, cartographer, dev banner
+- Production build uses esbuild for server-side bundling
+- Separate build outputs for client (dist/public) and server (dist)
+
+*Storage Layer*:
+- In-memory storage implementation (MemStorage class)
+- Storage interface defines CRUD operations for users
+- Currently implements basic user management (getUser, getUserByUsername, createUser)
+- Uses UUID for user ID generation
+- No persistent database connection in current implementation (designed to be database-agnostic)
+
+### Data Storage Solutions
+
+*Database Setup*: PostgreSQL with Drizzle ORM
+- Drizzle ORM configured for type-safe database operations
+- Schema defined in shared/schema.ts for shared types between client and server
+- Migrations managed through Drizzle Kit (output to ./migrations)
+- Database connection via Neon serverless driver (@neondatabase/serverless)
+- Connection managed through DATABASE_URL environment variable
+
+*Schema Design*:
+- Users table with auto-generated UUID primary keys
+- Zod schemas generated from Drizzle schemas for runtime validation
+- Type inference for TypeScript using Drizzle's $inferSelect
+
+*Note*: The application currently uses in-memory storage (MemStorage), but infrastructure is in place to easily swap to PostgreSQL-backed storage by implementing the IStorage interface with Drizzle operations.
+
+### Authentication and Authorization
+
+Currently minimal - basic user schema exists with username/password fields, but no authentication middleware or session management is actively implemented. The infrastructure includes:
+- User schema with username and password fields
+- Session storage configured via connect-pg-simple (PostgreSQL session store)
+- No active authentication routes or middleware in current implementation
+
+### External Dependencies
+
+*Core Libraries*:
+- @tanstack/react-query: Async state management and data fetching
+- wouter: Lightweight client-side routing (alternative to React Router)
+- framer-motion: Animation library for UI transitions
+- date-fns: Date manipulation and formatting utilities
+- zod: Runtime type validation and schema validation
+- nanoid: Unique ID generation
+
+*Form Handling*:
+- react-hook-form: Form state management
+- @hookform/resolvers: Validation resolvers for react-hook-form
+
+*UI Component Dependencies*:
+- @radix-ui/*: Comprehensive collection of accessible UI primitives
+- class-variance-authority: Type-safe variant styling
+- clsx & tailwind-merge: Utility for conditional class merging
+- cmdk: Command palette component
+- embla-carousel-react: Carousel/slider component
+- lucide-react: Icon library
+
+*Development Tools*:
+- @replit/vite-plugin-*: Replit-specific development plugins
+- TypeScript with strict mode enabled
+- Path aliases configured for clean imports (@/, @shared/, @assets/)
+
+*Build Configuration*:
+- Vite for frontend bundling with React plugin
+- esbuild for server-side bundling (production builds)
+- PostCSS with Tailwind CSS and Autoprefixer
+- TypeScript compilation with incremental builds
+*AUTHOR*:
+-DRUPAD GOVIND
+-R SREENIVASA REDDY
+-TENTU HARSHAVARDHAN NAIDU
